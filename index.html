@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>スタート | micro-z</title>
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.0/semantic.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.0/semantic.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            margin: 0 auto;
+            width: 100%;
+            background-image: url(/media/images/closet_3.jpg);
+            background-size: cover;
+            text-align: center;
+        }
+
+        .ui.modal {
+            width: 30%;
+            min-width: 300px;
+            margin: 0 auto;
+        }
+
+        #logo {
+            text-align: left;
+            font-size: 24px;
+            margin: 0 auto;
+        }
+
+        h1.ui.inverted.segment {
+            font-size: 10vw;
+            margin: 0 auto;
+            padding: 200px 0;
+            background-color: transparent;
+            box-shadow: none;
+            text-shadow: 1px 1px 1px #404040,
+                -1px 1px 1px #404040,
+                1px -1px 1px #404040,
+                -1px -1px 1px #404040,
+                1px 1px 1px #404040,
+                -1px 1px 1px #404040,
+                1px -1px 1px #404040,
+                -1px -1px 1px #404040;
+        }
+
+        #start {
+            min-width: 120px;
+            margin: 0 auto;
+        }
+
+        .ui.menu {
+            height: 56px;
+            padding: 4px 3%;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="ui top fixed secondary grey inverted menu">
+        <div class="item">
+            <h1 class="ui inverted header" id="logo">micro-z</h1>
+        </div>
+        <div class="right item">
+            <button class="ui purple labeled icon button" id="start">
+                <i class="angle double right icon"></i>今すぐ開始
+            </button>
+        </div>
+    </div>
+
+    <div class="ui modal" id="login">
+        <!-- <i class="close icon"></i> -->
+        <div class="ui segment">
+            <form class="ui form error" method="POST" novalidate>
+                {% csrf_token %}
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="user icon"></i>
+                        {{ form.email }}
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="lock icon"></i>
+                        {{ form.password }}
+                    </div>
+                </div>
+                <div class="ui error message"></div>
+                <div class="ui grid">
+                    <div class="eight wide column">
+                        <button class="ui fluid purple submit button" id='login_btn' name="login_btn">
+                            <i class="sign-in icon"></i>ログイン
+                        </button>
+                    </div>
+                    <div class="eight wide column">
+                        <button class="ui fluid basic purple submit button" id="signup_btn" name="signup_btn">
+                            <i class="user plus icon"></i>新規登録
+                        </button>
+                    </div>
+                </div>
+                <div class="ui grid">
+                    <div class="two wide column">
+                        <button class="ui circular facebook icon button">
+                            <i class="facebook icon"></i>
+                        </button>
+                    </div>
+                    <div class="two wide column">
+                        <button class="ui circular twitter icon button">
+                            <i class="twitter icon"></i>
+                        </button>
+                    </div>
+                    <div class="two wide column">
+                        <button class="ui circular instagram icon button">
+                            <i class="instagram icon"></i>
+                        </button>
+                    </div>
+                    <div class="two wide column">
+                        <button class="ui circular google plus icon button">
+                            <i class="google plus icon"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% if form.non_field_errors %}
+        <div class="ui modal" id="error">
+            <div class="ui segment">
+                <div class="ui error message">
+                    <!-- <i class="close icon"></i> -->
+                    <ul class="list">
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <h1 class="ui inverted stackable segment">All My Closet,<br>In Micro-Z.</h1>
+    <script>
+        $(function () {
+            $('#start').click(function () {
+                $('#login').modal('show');
+            });
+
+            $('.ui.form').form({
+                fields: {
+                    email: {
+                        identifier: 'email',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'メールアドレスを入力してください。'
+                        }]
+                    },
+
+                    password: {
+                        identifier: 'password',
+                        rules: [{
+                            type: 'minLength[8]',
+                            prompt: '半角英数字8文字以上のパスワードを入力してください。'
+                        }]
+                    }
+                }
+            });
+
+            $('#error').modal('show');
+
+            // $('.ui.form').keypress(function (e) {
+            //     console.log("イベント検出")
+            //     if ((e.which && e.which === 13) || (e.keyCode && e.keyCode === 13)) {
+            //         console.log(e.keyCode +":"+ e.which)
+            //         return false;
+
+            //     } else {
+            //         return true;
+            //     }
+            // });
+
+        });
+    </script>
+</body>
+
+</html>
